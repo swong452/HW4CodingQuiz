@@ -1,0 +1,46 @@
+#firstpg {
+    text-align: center;
+    padding: 50px;
+}
+
+#header {
+    display:inline;
+ 
+}
+
+#Highscore {
+    display: inline;
+    color: lightcoral;
+    width:50%;
+}
+
+#timer {
+    display: inline;
+    color: blue;
+    position:absolute;
+    right:0;
+    padding-right: 5px;
+}
+
+#Quiz {
+    margin:30px;
+    padding: 5px;
+}
+
+#questions {
+    display:none;
+    text-align: center;
+}
+
+button {
+    background-color: lightgreen;
+    /* border: none;
+    height: 40px;
+    cursor: pointer;
+    color: black;
+    font-size: 1em; */
+}
+
+button:hover {
+    background-color: #febc5d;
+  }
