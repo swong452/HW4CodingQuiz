@@ -14,27 +14,47 @@
         <div id = "timer">Timer:<span id="Timeleft">00</span> </div>
     </div>
 
-    <div id="firstpg">
+    <div id="firstpage">
         <h1><strong> Coding Quiz Challenge </strong> </h1>
 
         <h5> Try to answer the following code-related questions
             within the time given on top right corner. Keep in mind
         that any incorrect answer will be penalized by decreasing the time
     by 10 seconds </h5>
-        <button id = "Quiz">Start Quiz</button>
+        <button id = "quiz">Start Quiz</button>
     </div>
 
-    <div id = "questions">
-        <p> Questions Page </p>
-
-        <div id="questionContent">
-            
+    <div id = "question-container">
+        <div id = "questions"><p> Questions Page </p> </div>
+        <div id="choices">
+            <div class = "choice" id="choiceA" data-index="1"></div>
+            <div class = "choice" id="choiceB" data-index="2"></div>
+            <div class = "choice" id="choiceC" data-index="3"></div>
         </div>
-
-
+        <div id = 'result'></div>
     </div>
     
-    
+
+    <div id = "finalscore" style = "display:none">
+        <h3> All DONE !</h3>
+        <p>  Final Score: <span id = 'score'>0 </span></p>
+        <form id = "username">
+            <label>Players' Name </label>
+            <input type="text" id="userinput"/>
+            <input type = "button" value = "Submit" id ="submitName"/>
+        </form>
+    </div>
+
+    <div id = "highscore" style = "display:none">
+        <h3> High Score List </h3>
+        <ul id ="playerlist"></ul>
+        <form id = "menu">
+           <input type = "button" value = "GoBack" id = "goBackMenu"/>
+           <input type = "button" value = "Clear HighScore" id = "clearScore"/> 
+        </form>
+    </div>
+
+  
     <script src="./script.js"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>

@@ -1,4 +1,4 @@
-#firstpg {
+#firstpage, #finalscore, #highscore {
     text-align: center;
     padding: 50px;
 }
@@ -22,25 +22,20 @@
     padding-right: 5px;
 }
 
-#Quiz {
+#quiz {
     margin:30px;
     padding: 5px;
 }
 
-#questions {
+#question-container {
     display:none;
     text-align: center;
 }
 
-button {
+button, choice {
     background-color: lightgreen;
-    /* border: none;
-    height: 40px;
-    cursor: pointer;
-    color: black;
-    font-size: 1em; */
 }
 
-button:hover {
+button:hover, choice:hover {
     background-color: #febc5d;
   }

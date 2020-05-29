@@ -1,10 +1,22 @@
-var quizEl = document.querySelector("#Quiz");
-var firstpgEl = document.querySelector("#firstpg");
+var firstpageEl = document.querySelector("#firstpage");
+var quizEl = document.querySelector("#quiz");
+var questionsDisplay = document.querySelector("#question-container");
+var questionEl = document.querySelector("#questions");
+var choicesDisplay = document.querySelector("#choices");
+var choiceAEl = document.querySelector("#choiceA");
+var choiceBEl = document.querySelector("#choiceB");
+var choiceCEl = document.querySelector("#choiceC");
+var resultEl = document.querySelector("#result");
 var timerDisplay = document.querySelector("#timer");
-var questionsDisplay = document.querySelector("#questions");
-var questionContentDisplay = document.querySelector("#questionContent");
+var finalscoreDisplay = document.querySelector("#finalscore");
+var userinputEl = document.querySelector("#userinput");
+var scoreEl = document.querySelector("#score");
+var submitNameEl = document.querySelector("#submitName");
+var highscoreDisplay = document.querySelector("#highscore");
+var playerListDisplay = document.querySelector("#playerlist");
 
 
+// Define Variable
 var q1 = {
     question: "Gandlaf The Gray Full Time job ?",
     choice1:"1. Wizard",
@@ -29,107 +41,131 @@ var q3 = {
   answer:"2"
 }
 
+var playerList = [{name:"Nobody", score:0}];
+
 var totalSeconds = 75;
 var secondsElapsed = 0;
 var interval;
-var questionList =[q1,q2,q3];
-var questionLen = questionList.length;
-var livequestion;
 var score = 0;
-var tempwait;
-var goOn = true;
+var questionList =[q1,q2,q3];
+var questionLen = questionList.length - 1;
 var index = 0;
+var livequestion;
+var TIMER;
+
 
 // User hit Start quiz, so closing first page
-quizEl.addEventListener("click", closepage);
+quizEl.addEventListener("click", startQuiz);
 
 // After page is closed, kick off quiz questions.
-function closepage(event) {
+function startQuiz(event) {
     console.log("Start questions page");
-    firstpgEl.style.display = "none";
-    startquiz(0);
-     
+    firstpageEl.style.display = "none";
+    questionsDisplay.style.display = "block";
+    startTimer();
+    renderQuestion(); // display only
 }
 
 
-function startquiz(i) {
-  console.log("Starting i value is:", i);
-  startTimer();
+function renderQuestion() {
+  console.log("Start Render Question");
+  //choicesDisplay.innerHTML = "";
+  livequestion = questionList[index];
   
-  questionsDisplay.style.display = "block";
-  questionContentDisplay.innerHTML = "";
-  //questionContentDisplay = " ";
-
-  livequestion = "";
-  livequestion = questionList[i];
-
-  var ask = document.createElement("p");
-  var button1 = document.createElement("button");
-  var button2 = document.createElement("button");
-  var button3 = document.createElement("button");
-  var correct = document.createElement("p");
-  var wrong = document.createElement("p");
-
-  ask.textContent = livequestion.question;
-  console.log("The object we are dealing with is: ", questionList[i]);
-  button1.textContent = livequestion.choice1;
-  button1.setAttribute("data-index", 1);
-  button2.textContent = livequestion.choice2;
-  button2.setAttribute("data-index", 2);
-  button3.textContent = livequestion.choice3;
-  button3.setAttribute("data-index", 3);
-  correct.textContent = "Correct, you are Smart !";
-  wrong.textContent = "Sorry, you are WRONG ";
+  console.log("The object we are dealing with is: ", questionList[index]);
   
-  questionContentDisplay.appendChild(ask);
-  questionContentDisplay.appendChild(button1);
-  questionContentDisplay.appendChild(button2);
-  questionContentDisplay.appendChild(button3);
-  console.log("Button 1 attribute: ", button1.getAttribute("data-index"));
-  console.log("Button 2 attribute: ", button2.getAttribute("data-index"));
-  console.log("Button 3 attribute: ", button3.getAttribute("data-index"));
+  questionEl.textContent = livequestion.question;
+  choiceAEl.textContent = livequestion.choice1;
+  choiceBEl.textContent = livequestion.choice2;
+  choiceCEl.textContent = livequestion.choice3;
+  resultEl.textContent = "";
+  console.log("question is: ", questionList[index].question);
+  console.log("Choice 1 is : ", questionList[index].choice1);
+  console.log("Choice 2 is : ", questionList[index].choice2);
+  console.log("Choice 3 is : ", questionList[index].choice3);
+  console.log("Choice 1 attribute: ", choiceAEl.getAttribute("data-index"));
+  console.log("Choice 2 attribute: ", choiceBEl.getAttribute("data-index"));
+  console.log("Choice 3 attribute: ", choiceCEl.getAttribute("data-index"));
   console.log("Correct answer (livequestion) supposed to be: ", livequestion.answer);
+}
 
-  //questionContentDisplay.addEventListener("click", function (event) {
-  questionContentDisplay.addEventListener("click", checkAnswer);
+choicesDisplay.addEventListener("click", checkAnswer);
+
+function checkAnswer(event) {
+  event.stopPropagation();
+  console.log(" Enter Function checkAnswered");
+
+  //if (event.target.matches("button") == true) {
+      
+  let userchoice = event.target.getAttribute("data-index");
+  console.log("User clicked on choice:", userchoice);
+  console.log("Correct Choice is:", livequestion.answer);
+
+  if (userchoice == livequestion.answer) {
+      score++;
+      resultEl.textContent="YOU ARE CORRECT";
+      alert("Right !");
+      console.log("You got it Right ! current score: ", score);
+  } else {
+      secondsElapsed = secondsElapsed + 10;
+      resultEl.textContent="YOU ARE WRONG";
+      alert("wrong !");
+      console.log("Wrong ans: current score: ", score);
+  }
+
+  nextQuestions();
+} //End If
+
+function nextQuestions () {
+  console.log ("Index len is: ", index, "question len :", questionLen)
+  if (index < questionLen) {
+    index++;
+    renderQuestion();
+  } else {
+    renderFinalscore();
+    
+  }
+}
+
+function renderFinalscore() {
+  questionsDisplay.style.display = "none";
+  finalscoreDisplay.style.display = "block";
+  scoreEl.textContent = score;
+  //console.log("user name is ", userinputEl.getAttribute("name"));
+
+}
+
+submitNameEl.addEventListener("click", function (event){
+  event.preventDefault();
+  event.stopPropagation();
+  console.log("FORM submit clicked:", userinputEl.value );
+  finalscoreDisplay.style.display = "none";
+  addPersonToList();
+  highscoreDisplay.style.display = "block";
+  renderHighscore();
+} )
+
+
+function addPersonToList() {
+  event.preventDefault();
+  var name = userinputEl.value;
+  playerList.push({ "name": name, "score": score });
+  console.log("Player list array content: ", playerListDisplay);
   
-  
-  function checkAnswer (event) {
-    event.stopPropagation();
-    event.preventDefault();
-    console.log("A CLICK event occured - User clicked button");
+}
 
-    if (event.target.matches("button") == true) {  
-      var userchoice = event.target.getAttribute("data-index");
-      console.log("User clicked on choice:", userchoice);
-      console.log("Correct Choice is:", livequestion.answer);
-      if (userchoice == livequestion.answer) {
-          score++;
-          questionContentDisplay.appendChild(correct);
-          alert("Right !");
-          console.log("You got it Right ! current score: ", score);
-      } else {
-          secondsElapsed = secondsElapsed + 10;
-          questionContentDisplay.appendChild(wrong);
-          alert("wrong !");
-          console.log("Wrong ans: current score: ", score);
-      }
-      console.log("Towards End of IF: Value of i before startquiz:", i);
-
-      // sleep(500);
-
-      if (questionLen > (i + 1)) {
-        startquiz(++i);
-      } else {
-        console.log("Final score: ", score);
-      }
-    }// End Outer If 
-  } //End Event Listener for click
-
-} // End Function StartTime
+function renderHighscore () {
+  event.preventDefault();
+  var name = userinputEl.value;
+  var li = document.createElement("li");
+  li.id = playerList.length;
+  li.textContent = name + ":  " + score;
+  playerListDisplay.append(li);
+}
 
 
-// Utility Function
+
+// ##############  Timer Related Function ###########
 
 // This function is where the "time" aspect of the timer runs
 // Notice no settings are changed other than to increment the secondsElapsed var
@@ -159,7 +195,6 @@ function stopTimer() {
     clearInterval(interval);
     renderTime();
   }
-
 
 
 //This function does 2 things. displays the time and checks to see if time is up.
