@@ -14,6 +14,8 @@ var scoreEl = document.querySelector("#score");
 var submitNameEl = document.querySelector("#submitName");
 var highscoreDisplay = document.querySelector("#highscore");
 var playerListDisplay = document.querySelector("#playerlist");
+var goBackMenuEl = document.querySelector("#goBackMenu");
+var clearScoreEl = document.querySelector("#clearScore");
 
 
 // Define Variable
@@ -43,7 +45,7 @@ var q3 = {
 
 var playerList = [{name:"Nobody", score:0}];
 
-var totalSeconds = 75;
+var totalSeconds;
 var secondsElapsed = 0;
 var interval;
 var score = 0;
@@ -51,7 +53,6 @@ var questionList =[q1,q2,q3];
 var questionLen = questionList.length - 1;
 var index = 0;
 var livequestion;
-var TIMER;
 
 
 // User hit Start quiz, so closing first page
@@ -161,6 +162,18 @@ function renderHighscore () {
   li.id = playerList.length;
   li.textContent = name + ":  " + score;
   playerListDisplay.append(li);
+}
+
+goBackMenuEl.addEventListener("click", goBackMenu);
+
+function goBackMenu () {
+  console.log("Inside GoBack Menu");
+  highscoreDisplay.style.display = "none";
+  firstpageEl.style.display = "block";
+  score=0;
+  index=0;
+  secondsElapsed = 0;
+
 }
 
 
