@@ -1,4 +1,5 @@
 var firstpageEl = document.querySelector("#firstpage");
+var viewscoreEl = document.querySelector("#viewscore");
 var quizEl = document.querySelector("#quiz");
 var questionsDisplay = document.querySelector("#question-container");
 var questionEl = document.querySelector("#questions");
@@ -111,9 +112,9 @@ function checkAnswer(event) {
       alert("Right !");
       console.log("You got it Right ! current score: ", score);
   } else {
-      secondsElapsed = secondsElapsed + 10;
+      secondsElapsed = secondsElapsed + 5;
       resultEl.textContent="YOU ARE WRONG";
-      alert("wrong !");
+      alert("Incorrect - minus 5 sec !!");
       console.log("Wrong ans: current score: ", score);
   }
 
@@ -180,6 +181,7 @@ function goBackMenu () {
   index=0;
   totalSeconds = 0;
   secondsElapsed = 0;
+  scoreEl.textContent = 0; // Re-initialze score display value before next round start
   userinputEl.value=""; // Re-Intialize Players Name to nothing, else next round, old name remains.
 }
 
@@ -192,6 +194,11 @@ function emptyscore () {
   playerList = [];
   console.log("clear score entered. Array Playerlist should be nothing: ", playerListDisplay);
 }
+
+viewscoreEl.addEventListener("click", function(event) {
+  console.log("User clicked Top Corner View High Score");
+  // is there a way to know what page currently on ?
+})
 
 
 
@@ -216,9 +223,7 @@ function startTimer() {
   } // End startTimer
 
 
-/* This function stops the interval and also resets secondsElapsed 
-and calls "setTime()" which effectively reset the timer 
-to the input selections workMinutesInput.value and restMinutesInput.value */
+// This function stops the interval and also resets secondsElapsed 
 function stopTimer() {
     secondsElapsed = 0;
     clearInterval(interval);
@@ -226,12 +231,11 @@ function stopTimer() {
   }
 
 
-//This function does 2 things. displays the time and checks to see if time is up.
+// Display time in HTML on certain format
 function renderTime() {
     // When renderTime is called it sets the textContent for the timer html...
-    // minutesDisplay.textContent = getFormattedMinutes();
     timerDisplay.textContent = "Timer: " + getFormattedSeconds();
-}
+} // End renderTime()
 
 function checkTimeout() {
    // checks to see if the time has run out
@@ -244,16 +248,13 @@ function checkTimeout() {
       finalscoreDisplay.style.display = "block";
     }
     console.log("Times up - current score:", score);
-    renderHighscore();
   }
-}
+} // End checkTimeout()
 
 
   
 function getFormattedSeconds() {
-    //var secondsLeft = (totalSeconds - secondsElapsed) % 60;
     var secondsLeft = (totalSeconds - secondsElapsed)
-  
     var formattedSeconds;
   
     if (secondsLeft < 10) {
