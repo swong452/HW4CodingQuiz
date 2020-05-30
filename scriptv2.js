@@ -43,7 +43,7 @@ var q3 = {
   answer:"2"
 }
 
-var playerList = [{name:"Nobody", score:0}];
+var playerList = [{name:"Nobody", score:77}];
 
 var totalSeconds;
 var secondsElapsed = 0;
@@ -203,7 +203,6 @@ function startTimer() {
     totalSeconds = 25;
     clearInterval(interval);
   
-    // we only want to start the timer if minutes is > 0
     if (totalSeconds > 0) {    
       /* the "interval" variable here using "setInterval()" begins the recurring increment of the 
          secondsElapsed variable which is used to check if the time is up */
@@ -211,19 +210,19 @@ function startTimer() {
           secondsElapsed++;
           //So renderTime() is called here once every second.
           renderTime();
+          checkTimeout();
         }, 1000);
-    } else {
-      alert("Minutes of work/rest must be greater than 0.")
     }
-  }
+  } // End startTimer
 
-  /* This function stops the interval and also resets secondsElapsed 
-   and calls "setTime()" which effectively reset the timer 
-   to the input selections workMinutesInput.value and restMinutesInput.value */
+
+/* This function stops the interval and also resets secondsElapsed 
+and calls "setTime()" which effectively reset the timer 
+to the input selections workMinutesInput.value and restMinutesInput.value */
 function stopTimer() {
     secondsElapsed = 0;
     clearInterval(interval);
-    //SAMSON renderTime();
+    renderTime(); // Added
   }
 
 
@@ -232,20 +231,24 @@ function renderTime() {
     // When renderTime is called it sets the textContent for the timer html...
     // minutesDisplay.textContent = getFormattedMinutes();
     timerDisplay.textContent = "Timer: " + getFormattedSeconds();
-  
-   // ..and then checks to see if the time has run out
-    if (secondsElapsed >= totalSeconds) {
-      alert("Times Up");
-      stopTimer();
-      // If while playing game, times out (gameover == false) -> flip screen to FinalScore
-      if (gameover == false) {
-        questionsDisplay.style.display = "none";
-        finalscoreDisplay.style.display = "block";
-      }
-      console.log("Times up - current score:", score);
-      renderHighscore();
+}
+
+function checkTimeout() {
+   // checks to see if the time has run out
+   if (secondsElapsed >= totalSeconds) {
+    alert("Times Up");
+    stopTimer();
+    // If while playing game, times out (gameover == false) -> flip screen to FinalScore
+    if (gameover == false) {
+      questionsDisplay.style.display = "none";
+      finalscoreDisplay.style.display = "block";
     }
+    console.log("Times up - current score:", score);
+    renderHighscore();
   }
+}
+
+
   
 function getFormattedSeconds() {
     //var secondsLeft = (totalSeconds - secondsElapsed) % 60;
