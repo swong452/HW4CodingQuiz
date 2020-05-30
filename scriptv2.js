@@ -109,16 +109,13 @@ function checkAnswer(event) {
   if (userchoice == livequestion.answer) {
       score++;
       resultEl.textContent="YOU ARE CORRECT";
-      alert("Right !");
       console.log("You got it Right ! current score: ", score);
   } else {
       secondsElapsed = secondsElapsed + 5;
-      resultEl.textContent="YOU ARE WRONG";
-      alert("Incorrect - minus 5 sec !!");
-      console.log("Wrong ans: current score: ", score);
+      resultEl.textContent="YOU ARE WRONG. Boo";
+      console.log("Wrong ans: - 5 sec. current score: ", score);
   }
-
-  nextQuestions();
+  setTimeout(nextQuestions, 1000);
 } //End If
 
 function nextQuestions () {
@@ -197,7 +194,11 @@ function emptyscore () {
 
 viewscoreEl.addEventListener("click", function(event) {
   console.log("User clicked Top Corner View High Score");
-  // is there a way to know what page currently on ?
+  stopTimer();
+  firstpageEl.style.display = "none";
+  questionsDisplay.style.display = "none";
+  finalscoreDisplay.style.display = "none";
+  highscoreDisplay.style.display = "block";
 })
 
 

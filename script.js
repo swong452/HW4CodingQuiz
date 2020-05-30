@@ -1,4 +1,5 @@
 var firstpageEl = document.querySelector("#firstpage");
+var viewscoreEl = document.querySelector("#viewscore");
 var quizEl = document.querySelector("#quiz");
 var questionsDisplay = document.querySelector("#question-container");
 var questionEl = document.querySelector("#questions");
@@ -29,7 +30,7 @@ var q1 = {
 
 var q2 = {
     question: " Samwise Gamgie Full Time job ?",
-    choice1: "1. Fighter",
+    choice1: "1. Fight Sauron",
     choice2: "2. Waiting for Lucy",
     choice3: "3. Gardner",
     answer:"3"
@@ -43,13 +44,31 @@ var q3 = {
   answer:"2"
 }
 
-var playerList = [{name:"Nobody", score:0}];
+var q4 = {
+  question: "Who wrote the classic Lord of the Ring ?",
+  choice1: "1. Donald Trump",
+  choice2: "2. Jimmy Kimmel",
+  choice3: "3. J.R Tolken",
+  answer:"3"
+}
+
+var q5 = {
+  question: "Who deserve the One Ring ?",
+  choice1: "1. Frodo",
+  choice2: "2. Gollum",
+  choice3: "3. Bilbo",
+  answer:"1"
+}
+
+
+
+var playerList = [{name:"Nobody", score:77}];
 
 var totalSeconds;
 var secondsElapsed = 0;
 var interval;
 var score = 0;
-var questionList =[q1,q2,q3];
+var questionList =[q1,q2,q3,q4,q5];
 var questionLen = questionList.length - 1;
 var index = 0;
 var livequestion;
@@ -108,16 +127,13 @@ function checkAnswer(event) {
   if (userchoice == livequestion.answer) {
       score++;
       resultEl.textContent="YOU ARE CORRECT";
-      alert("Right !");
       console.log("You got it Right ! current score: ", score);
   } else {
-      secondsElapsed = secondsElapsed + 10;
-      resultEl.textContent="YOU ARE WRONG";
-      alert("wrong !");
-      console.log("Wrong ans: current score: ", score);
+      secondsElapsed = secondsElapsed + 5;
+      resultEl.textContent="YOU ARE WRONG. Boo";
+      console.log("Wrong ans: - 5 sec. current score: ", score);
   }
-
-  nextQuestions();
+  setTimeout(nextQuestions, 1000);
 } //End If
 
 function nextQuestions () {
@@ -180,6 +196,7 @@ function goBackMenu () {
   index=0;
   totalSeconds = 0;
   secondsElapsed = 0;
+  scoreEl.textContent = 0; // Re-initialze score display value before next round start
   userinputEl.value=""; // Re-Intialize Players Name to nothing, else next round, old name remains.
 }
 
@@ -193,6 +210,15 @@ function emptyscore () {
   console.log("clear score entered. Array Playerlist should be nothing: ", playerListDisplay);
 }
 
+viewscoreEl.addEventListener("click", function(event) {
+  console.log("User clicked Top Corner View High Score");
+  stopTimer();
+  firstpageEl.style.display = "none";
+  questionsDisplay.style.display = "none";
+  finalscoreDisplay.style.display = "none";
+  highscoreDisplay.style.display = "block";
+})
+
 
 
 // ##############  Timer Related Function ###########
@@ -200,10 +226,9 @@ function emptyscore () {
 // This function is where the "time" aspect of the timer runs
 // Notice no settings are changed other than to increment the secondsElapsed var
 function startTimer() {
-    totalSeconds = 25;
+    totalSeconds = 45;
     clearInterval(interval);
   
-    // we only want to start the timer if minutes is > 0
     if (totalSeconds > 0) {    
       /* the "interval" variable here using "setInterval()" begins the recurring increment of the 
          secondsElapsed variable which is used to check if the time is up */
@@ -211,46 +236,44 @@ function startTimer() {
           secondsElapsed++;
           //So renderTime() is called here once every second.
           renderTime();
+          checkTimeout();
         }, 1000);
-    } else {
-      alert("Minutes of work/rest must be greater than 0.")
     }
-  }
+  } // End startTimer
 
-  /* This function stops the interval and also resets secondsElapsed 
-   and calls "setTime()" which effectively reset the timer 
-   to the input selections workMinutesInput.value and restMinutesInput.value */
+
+// This function stops the interval and also resets secondsElapsed 
 function stopTimer() {
     secondsElapsed = 0;
     clearInterval(interval);
-    //SAMSON renderTime();
+    renderTime(); // Added
   }
 
 
-//This function does 2 things. displays the time and checks to see if time is up.
+// Display time in HTML on certain format
 function renderTime() {
     // When renderTime is called it sets the textContent for the timer html...
-    // minutesDisplay.textContent = getFormattedMinutes();
     timerDisplay.textContent = "Timer: " + getFormattedSeconds();
-  
-   // ..and then checks to see if the time has run out
-    if (secondsElapsed >= totalSeconds) {
-      alert("Times Up");
-      stopTimer();
-      // If while playing game, times out (gameover == false) -> flip screen to FinalScore
-      if (gameover == false) {
-        questionsDisplay.style.display = "none";
-        finalscoreDisplay.style.display = "block";
-      }
-      console.log("Times up - current score:", score);
-      renderHighscore();
+} // End renderTime()
+
+function checkTimeout() {
+   // checks to see if the time has run out
+   if (secondsElapsed >= totalSeconds) {
+    alert("Times Up");
+    stopTimer();
+    // If while playing game, times out (gameover == false) -> flip screen to FinalScore
+    if (gameover == false) {
+      questionsDisplay.style.display = "none";
+      finalscoreDisplay.style.display = "block";
     }
+    console.log("Times up - current score:", score);
   }
+} // End checkTimeout()
+
+
   
 function getFormattedSeconds() {
-    //var secondsLeft = (totalSeconds - secondsElapsed) % 60;
     var secondsLeft = (totalSeconds - secondsElapsed)
-  
     var formattedSeconds;
   
     if (secondsLeft < 10) {
